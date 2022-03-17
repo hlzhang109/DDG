@@ -110,7 +110,7 @@ class ResNet(torch.nn.Module):
         self.dropout = nn.Dropout(hparams['resnet_dropout'])
         self.partpool = nn.AdaptiveMaxPool2d((4,1)) if hparams['is_ddg'] else None
 
-    def forward(self, x):
+    def forward(self, x, stage=0):
         """Encode x into a feature vector of size n_outputs."""
         x = self.network.conv1(x)
         x = self.network.bn1(x)
@@ -123,7 +123,10 @@ class ResNet(torch.nn.Module):
         x = self.network.fc(self.network.avgpool(x))
         output = self.dropout(x.view(x.size(0), x.size(1)))
         if self.partpool is not None:
-            output_d = self.partpool(x).detach()
+            if stage == 0:
+                output_d = self.partpool(x).detach()
+            else:
+                output_d = self.partpool(x)
             return output_d.view(output_d.size(0), output_d.size(1)*4), output
         return output
 
@@ -164,7 +167,7 @@ class MNIST_CNN(nn.Module):
         self.is_ddg = hparams['is_ddg']
         self.avgpool = nn.AdaptiveAvgPool2d((1,1))
 
-    def forward(self, x):
+    def forward(self, x, stage=0):
         x = self.conv1(x)
         x = F.relu(x)
         x = self.bn0(x)
@@ -183,7 +186,10 @@ class MNIST_CNN(nn.Module):
 
         if self.is_ddg:
             f = self.avgpool(x)
-            f = f.view(f.size(0), f.size(1)).detach()
+            if stage == 0:
+                f = f.view(f.size(0), f.size(1)).detach()
+            else:
+                f = f.view(f.size(0), f.size(1))
             x = self.avgpool(x)
             x = self.squeezeLastTwo(x)
             return f, x
@@ -470,10 +476,10 @@ class AdaINGen(nn.Module):
 
     def decode(self, content, ID):
         # decode style codes to an image
-        ID1 = ID[:,:2048]
-        ID2 = ID[:,2048:4096]
-        ID3 = ID[:,4096:6144]
-        ID4 = ID[:,6144:]
+        ID1 = ID[:,:512]
+        ID2 = ID[:,512:1024]
+        ID3 = ID[:,1024:1536]
+        ID4 = ID[:,1536:]
         adain_params_w = torch.cat( (self.mlp_w1(ID1), self.mlp_w2(ID2), self.mlp_w3(ID3), self.mlp_w4(ID4)), 1)
         adain_params_b = torch.cat( (self.mlp_b1(ID1), self.mlp_b2(ID2), self.mlp_b3(ID3), self.mlp_b4(ID4)), 1)
         self.assign_adain_params(adain_params_w, adain_params_b, self.dec)
