@@ -111,7 +111,7 @@ def _hparams(algorithm, dataset, random_seed, stage):
         _hparam('max_cyc_w', 2.0, lambda r: r.choice([1.0, 2.0, 4.0]))
         _hparam('max_w', 2.0, lambda r: r.choice([0.5, 1.0, 2.0]))
         _hparam('gan_w', 1.0, lambda r: r.choice([0.5, 1.0, 2.0]))
-        _hparam('dual_lambda', 0.01, lambda r: 0.05)
+        _hparam('eta', 0.01, lambda r: 0.05)
         _hparam('recon_x_cyc_w', 0.0, lambda r: r.choice([0.1, 0.2, 0.5, 1.0]))
         _hparam('warm_iter_r', .2, lambda r: r.choice([.1, .2, .3, .4, .5]))
         _hparam('warm_scale', 5e-3, lambda r: 10**r.uniform(-5, -3))
