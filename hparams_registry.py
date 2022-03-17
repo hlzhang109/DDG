@@ -84,7 +84,7 @@ def _hparams(algorithm, dataset, random_seed, stage):
         _hparam('sd_reg', 0.1, lambda r: 10**r.uniform(-5, -1))
 
     if 'DDG' in algorithm:
-        _hparam('is_dedg', True, lambda r: True)
+        _hparam('is_ddg', True, lambda r: True)
         if algorithm == 'DEDG_AugMix':
             _hparam('is_augmix', True, lambda r: True)
         else:
