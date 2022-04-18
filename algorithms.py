@@ -7,7 +7,7 @@ import torch.autograd as autograd
 from torch.autograd import Variable
 from torch.optim import lr_scheduler
 from torchvision import transforms
-from scripts.write_2images import write_2images
+from scripts.save_images import write_2images
 import copy
 import numpy as np
 import random
