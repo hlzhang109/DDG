@@ -98,6 +98,7 @@ def _hparams(algorithm, dataset, random_seed, stage):
             _hparam('recon_x_w', 0.5, lambda r: r.choice([1., 2., 5., 10.]))
         elif stage ==  0:
             _hparam('steps', 25000, lambda r: 25000)
+            _hparam('margin', 0.025, lambda r: 0.025)
             _hparam('stage', stage, lambda r: stage)
             _hparam('recon_id_w', 0.5, lambda r: r.choice([0.1, 0.2, 0.5, 1.0]))
             _hparam('recon_x_w', 0.5, lambda r: r.choice([1., 2., 5., 10.]))
