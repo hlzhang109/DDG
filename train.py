@@ -20,7 +20,7 @@ import hparams_registry
 import algorithms
 import numpy.random as random
 from lib import misc
-from scripts.write_2images import write_2images
+from scripts.save_images import write_2images
 from lib.fast_data_loader import InfiniteDataLoader, FastDataLoader
 
 def get_config(config):
