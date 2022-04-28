@@ -27,7 +27,7 @@ def _hparams(algorithm, dataset, random_seed, stage):
     # Unconditional hparam definitions.
 
     _hparam('data_augmentation', True, lambda r: True)
-    _hparam('resnet18', False, lambda r: False)
+    _hparam('resnet18', True, lambda r: False)
     _hparam('resnet_dropout', 0.0, lambda r: r.choice([0., 0.1, 0.5]))
     _hparam('class_balanced', False, lambda r: False)
     _hparam('nonlinear_classifier', False, lambda r: bool(r.choice([False, True])))
@@ -85,7 +85,7 @@ def _hparams(algorithm, dataset, random_seed, stage):
 
     if 'DDG' in algorithm:
         _hparam('is_ddg', True, lambda r: True)
-        if algorithm == 'DEDG_AugMix':
+        if algorithm == 'DDG_AugMix':
             _hparam('is_augmix', True, lambda r: True)
         else:
             _hparam('is_augmix', False, lambda r: False)
@@ -98,12 +98,12 @@ def _hparams(algorithm, dataset, random_seed, stage):
             _hparam('recon_x_w', 0.5, lambda r: r.choice([1., 2., 5., 10.]))
         elif stage ==  0:
             _hparam('steps', 25000, lambda r: 25000)
-            _hparam('margin', 0.025, lambda r: 0.025)
             _hparam('stage', stage, lambda r: stage)
+            _hparam('margin', 0.025, lambda r: 0.025)
             _hparam('recon_id_w', 0.5, lambda r: r.choice([0.1, 0.2, 0.5, 1.0]))
             _hparam('recon_x_w', 0.5, lambda r: r.choice([1., 2., 5., 10.]))
         else:
-            _hparam('steps', 25000, lambda r: 25000)
+            _hparam('steps', 10000, lambda r: 10000)
             _hparam('stage', stage, lambda r: stage)
             _hparam('recon_id_w', 0.5, lambda r: r.choice([0.1, 0.2, 0.5, 1.0]))
             _hparam('margin', 0.25, lambda r: r.choice([0.1, 0.25, 0.5, 0.75]))
@@ -129,7 +129,6 @@ def _hparams(algorithm, dataset, random_seed, stage):
     else:
         _hparam('lr', 5e-5, lambda r: 10**r.uniform(-5, -3.5))
 
-
     if dataset in SMALL_IMAGES:
         _hparam('weight_decay', 0., lambda r: 0.)
     else:
@@ -146,14 +145,12 @@ def _hparams(algorithm, dataset, random_seed, stage):
     else:
         _hparam('batch_size', 32, lambda r: int(2**r.uniform(3, 5.5)) )
 
-
     if algorithm in ['DANN', 'CDANN'] and dataset in SMALL_IMAGES:
         _hparam('lr_g', 1e-3, lambda r: 10**r.uniform(-4.5, -2.5) )
     elif algorithm in ['DANN', 'CDANN']:
         _hparam('lr_g', 5e-5, lambda r: 10**r.uniform(-5, -3.5) )
     elif 'DDG' in algorithm:
         _hparam('lr_g', 1e-4, lambda r: 10**r.uniform(-5, -3.5) )
-
 
     if algorithm in ['DANN', 'CDANN'] and dataset in SMALL_IMAGES:
         _hparam('lr_d', 1e-3, lambda r: 10**r.uniform(-4.5, -2.5) )
@@ -162,12 +159,10 @@ def _hparams(algorithm, dataset, random_seed, stage):
     elif 'DDG' in algorithm:
         _hparam('lr_d', 1e-4, lambda r: 10**r.uniform(-5, -3.5) )
 
-
     if algorithm in ['DANN', 'CDANN'] and dataset in SMALL_IMAGES:
         _hparam('weight_decay_g', 0., lambda r: 0.)
-    elif algorithm in ['DANN', 'CDANN', 'DDG']:
+    elif algorithm in ['DANN', 'CDANN', 'DDG', 'DDG_AugMix']:
         _hparam('weight_decay_g', 0.0005, lambda r: 10**r.uniform(-6, -2) )
-
 
     return hparams
 

@@ -29,10 +29,10 @@ def get_config(config):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Domain generalization')
-    parser.add_argument('--data_dir', type=str, default='/data2/yifan.zhang/datasets/DGdata/')
+    parser.add_argument('--data_dir', type=str, default='/data1/yifan.zhang/datasets/DGdata/')
     parser.add_argument('--dataset', type=str, default="PACS")
     parser.add_argument('--algorithm', type=str, default="DDG")
-    parser.add_argument('--gen_dir', type=str, default="models/PACS_gen.pkl", help="if not empty, the generator of DEDF will be loaded")
+    parser.add_argument('--gen_dir', type=str, default="", help="if not empty, the generator of DEDF will be loaded")
     parser.add_argument('--stage', type=int, default=1,
         help='hyperparameter for DDG, 0:train the gan, 1: train the model')
     parser.add_argument('--task', type=str, default="domain_generalization",
