@@ -20,10 +20,13 @@ from wilds.datasets.camelyon17_dataset import Camelyon17Dataset
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 DATASETS = [
-    # Small
+    # Debug
+    "Debug28",
+    "Debug224",
+    # Small images
     "ColoredMNIST",
     "RotatedMNIST",
-    # Large
+    # Big images
     "VLCS",
     "PACS",
     "OfficeHome",
@@ -201,36 +204,23 @@ class MultipleEnvironmentImageFolder(MultipleDomainDataset):
         super().__init__()
         environments = [f.name for f in os.scandir(root) if f.is_dir()]
         environments = sorted(environments)
-        if hparams['is_augmix']:
-            transform = transforms.Compose([
-                transforms.Resize((224,224)),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-            ])
+        transform = transforms.Compose([
+            transforms.Resize((224,224)),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ])
 
-            augment_transform = transforms.Compose([
-                transforms.RandomResizedCrop(224, scale=(0.7, 1.0)),
-                transforms.ToTensor()
-            ])
-        else:
-            transform = transforms.Compose([
-                transforms.Resize((224,224)),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-            ])
-
-            augment_transform = transforms.Compose([
-                # transforms.Resize((224,224)),
-                transforms.RandomResizedCrop(224, scale=(0.7, 1.0)),
-                transforms.RandomHorizontalFlip(),
-                transforms.ColorJitter(0.3, 0.3, 0.3, 0.3),
-                transforms.RandomGrayscale(),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            ])
+        augment_transform = transforms.Compose([
+            # transforms.Resize((224,224)),
+            transforms.RandomResizedCrop(224, scale=(0.7, 1.0)),
+            transforms.RandomHorizontalFlip(),
+            transforms.ColorJitter(0.3, 0.3, 0.3, 0.3),
+            transforms.RandomGrayscale(),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
 
         self.datasets = []
         self.labels = []
@@ -243,7 +233,7 @@ class MultipleEnvironmentImageFolder(MultipleDomainDataset):
 
             path = os.path.join(root, environment)
             env_dataset = ImageFolder(path,
-                transform=env_transform, sample_pos=hparams['is_ddg'], is_mix = hparams['is_augmix'])
+                transform=env_transform, sample_pos=hparams['is_ddg'], is_mix = False)
 
             self.datasets.append(env_dataset)
             self.labels.append(env_dataset.targets)
