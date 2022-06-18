@@ -63,14 +63,13 @@ python train.py\
 ```
 
 ### Citation 
-If you find this repo useful, please cite: 
+If you find this repo useful, please consider citing: 
 ```
-@misc{zhang2021principled,
-      title={Towards Principled Disentanglement for Domain Generalization}, 
-      author={Hanlin Zhang and Yi-Fan Zhang and Weiyang Liu and Adrian Weller and Bernhard Schölkopf and Eric P. Xing},
-      year={2021},
-      eprint={2111.13839},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@inproceedings{zhang2022DDG,
+  title={Towards principled disentanglement for domain generalization},
+  author={Zhang, Hanlin and Zhang, Yi-Fan and Liu, Weiyang and Weller, Adrian and Sch{\"o}lkopf, Bernhard and Xing, Eric P},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={8024--8034},
+  year={2022}
 }
 ```
