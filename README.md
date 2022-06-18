@@ -1,4 +1,4 @@
-# Towards Principled Disentanglement for Domain Generalization
+# Towards Principled Disentanglement for Domain Generalization, CVPR, 2022 (Oral)
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-red.svg)](#python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
