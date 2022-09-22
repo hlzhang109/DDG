@@ -448,6 +448,7 @@ class AdaINGen(nn.Module):
         activ = 'lrelu'
         pad_type = 'reflect'
         mlp_dim = 512
+        self.id_dim = id_dim
 
         # content encoder
         self.enc_content = ContentEncoder(n_downsample, n_res, input_dim, dim, 'in', activ, pad_type=pad_type, tanh=False, res_type='basic')
@@ -476,10 +477,10 @@ class AdaINGen(nn.Module):
 
     def decode(self, content, ID):
         # decode style codes to an image
-        ID1 = ID[:,:512]
-        ID2 = ID[:,512:1024]
-        ID3 = ID[:,1024:1536]
-        ID4 = ID[:,1536:]
+        ID1 = ID[:,:self.id_dim]
+        ID2 = ID[:,self.id_dim:self.id_dim*2]
+        ID3 = ID[:,self.id_dim*2:self.id_dim*3]
+        ID4 = ID[:,self.id_dim*3:self.id_dim*4]
         adain_params_w = torch.cat( (self.mlp_w1(ID1), self.mlp_w2(ID2), self.mlp_w3(ID3), self.mlp_w4(ID4)), 1)
         adain_params_b = torch.cat( (self.mlp_b1(ID1), self.mlp_b2(ID2), self.mlp_b3(ID3), self.mlp_b4(ID4)), 1)
         self.assign_adain_params(adain_params_w, adain_params_b, self.dec)
