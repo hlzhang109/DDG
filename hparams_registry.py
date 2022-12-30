@@ -92,7 +92,7 @@ def _hparams(algorithm, dataset, random_seed, stage):
         if 'MNIST' in dataset:
             print('mnsit')
             _hparam('steps', 10000, lambda r: 10000)
-            _hparam('stage', 1, lambda r: stage)
+            _hparam('stage', stage, lambda r: stage)
             _hparam('margin', 0.025, lambda r: 0.025)
             _hparam('recon_id_w', 0.5, lambda r: r.choice([0.1, 0.2, 0.5, 1.0]))
             _hparam('recon_x_w', 0.5, lambda r: r.choice([1., 2., 5., 10.]))
